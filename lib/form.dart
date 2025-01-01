@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stateful_widgets/details.dart';
 
+enum ProductTypeEnum { Downloadable, Deliverable }
+
 class MyForm extends StatefulWidget {
   const MyForm({super.key});
 
@@ -12,6 +14,7 @@ class _MyFormState extends State<MyForm> {
   final _productController = TextEditingController();
   final _productDesController = TextEditingController();
   bool? _checkBox, _listTileCheckBox = false;
+  ProductTypeEnum? _productTypeEnum;
 
   @override
   void dispose() {
@@ -79,15 +82,18 @@ class _MyFormState extends State<MyForm> {
 
             //1.checkBox
             Checkbox(
-                tristate: true,
-                checkColor: Colors.white,
-                activeColor: Colors.purple,
-                value: _checkBox,
-                onChanged: (val) {
-                  setState(() {
+              tristate: true,
+              checkColor: Colors.white,
+              activeColor: Colors.purple,
+              value: _checkBox,
+              onChanged: (val) {
+                setState(
+                  () {
                     _checkBox = val;
-                  });
-                }),
+                  },
+                );
+              },
+            ),
 
             //2. check box list tile
             CheckboxListTile(
@@ -106,6 +112,47 @@ class _MyFormState extends State<MyForm> {
               //leading check box
               controlAffinity: ListTileControlAffinity.leading,
             ),
+
+            //3. Radio btns
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: RadioListTile<ProductTypeEnum>(
+                      contentPadding: EdgeInsets.all(0.0),
+                      title: Text(ProductTypeEnum.Deliverable.name),
+                      value: ProductTypeEnum.Deliverable,
+                      groupValue: _productTypeEnum,
+                      onChanged: (val) {
+                        setState(
+                              () {
+                            _productTypeEnum = val;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: RadioListTile<ProductTypeEnum>(
+                      contentPadding: EdgeInsets.all(0.0),
+                      title: Text(ProductTypeEnum.Downloadable.name),
+                      value: ProductTypeEnum.Downloadable,
+                      groupValue: _productTypeEnum,
+                      onChanged: (val) {
+                        setState(
+                              () {
+                            _productTypeEnum = val;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+
           ],
         ),
       ),
